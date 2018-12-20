@@ -11,6 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CabeceraComponent } from './cabecera/cabecera.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
+import { GaleriaComponent } from './galeria/galeria.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,7 +28,8 @@ const routes: Routes = [
     FooterComponent,
     CabeceraComponent,
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
+    GaleriaComponent
   ],
   imports: [
     BrowserModule,
