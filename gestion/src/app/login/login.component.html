@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-4 col-sm-4"></div>
       <div class="col-lg-4 col-md-4 col-sm-4">
-<form>
+<form #loginForm="ngForm" (ngSubmit)="onLogin">
   <div class="form-group">
     <label for="exampleInputEmail1">Direccion de correo</label>
     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Introduzca email">
@@ -13,5 +13,5 @@
     <input type="checkbox" class="form-check-input" id="exampleCheck1">
     <label class="form-check-label" for="exampleCheck1">Recordar</label>
   </div>
-  <button type="submit" class="btn btn-primary">Ingresar</button>
+  <button type="submit" class="btn btn-primary" [routerLink]="['/profesor']">Ingresar</button>
 </form>

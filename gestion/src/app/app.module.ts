@@ -1,5 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -12,10 +13,15 @@ import { CabeceraComponent } from './cabecera/cabecera.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { GaleriaComponent } from './galeria/galeria.component';
+import { ProfesorComponent } from './profesor/profesor.component';
+import {FormsModule} from '@angular/forms';
+
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'registro', component: RegistroComponent}
+  { path: 'registro', component: RegistroComponent},
+  { path: 'profesor', component: ProfesorComponent}
+
   //{ path: '',component:CabeceraComponent, pathMatch:'full'},//cuando este vacio nuesgtra ruta nos rediriga al nuestro Inicio
   //{ path: '**', redirectTo:'/', pathMatch:'full'}//cualquier ruta que sea desconocida que nos dirigia a cualquier ruta que querramos
 ];
@@ -29,10 +35,12 @@ const routes: Routes = [
     CabeceraComponent,
     LoginComponent,
     RegistroComponent,
-    GaleriaComponent
+    GaleriaComponent,
+    ProfesorComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     RouterModule.forRoot(routes)
   ],

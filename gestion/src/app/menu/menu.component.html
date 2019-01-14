@@ -10,10 +10,11 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['']">QUIENES SOMOS <span class="sr-only">(current)</span></a>  <!-- href="#" carga toda la pagina pero con esto [routerLink]="['/']" -->
+          <a class="nav-link btn bnt-warning" (click)="activo='primero'" >QUIENES SOMOS <span class="sr-only">(current)</span></a>  <!-- href="#" carga toda la pagina pero con esto [routerLink]="['/']" -->
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['']">ACERCA DE</a>
+          <a class="nav-link btn bnt-warning" (click)="activo='segundo'" >ACERCA DE</a>
+
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['']">RECURSOS</a>
@@ -25,9 +26,22 @@
           <a class="nav-link disabled" [routerLink]="['/registro']">REGISTRARSE</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-      </form>
+      
     </div>
   </nav>
+
+  <p class="text d-none"  [ngClass] ="{'d-block':activo=='primero'}">
+    Guiados por nuestro espíritu universitario, brindamos una formación integral 
+    y aseguramos el acompañamiento de nuestros estudiantes durante toda su vida universitaria, 
+    desde el ingreso hasta su graduación, procurando la inclusión de estudiantes pertenecientes 
+    a grupos de atención prioritaria o minorías.
+
+Conocer sobre espacios de fortalecimiento académico, investigativo y espiritual; 
+orientación profesional y vocacional, programas de asesoramiento para alumnos nuevos,
+ postulación a becas y ayuda financiera; apoyo y asistencia personal y psicológica, son 
+ solo algunos de los aspectos en los que nuestra Unidad de Bienestar Estudiantil podrá ayudarte.
+  </p>
+
+<p class="text d-none" [ngClass]="{'d-block':activo=='segundo'}">Acerca de </p>
+
+  
