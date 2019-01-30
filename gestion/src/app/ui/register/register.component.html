@@ -1,0 +1,41 @@
+<section id="register" class="mb-5 mt-5">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-xs-12 col-sm-6 col-md-4 mx-auto">
+        <div class="card_register">
+          <div class="card">
+            <div class="card-header text-center">
+              Registro
+            </div>
+            <div class="card-body text-center">
+              <form [formGroup]="registerForm" (ngSubmit)="onAddUser()">
+                <mat-form-field>
+                  <input matInput placeholder="Correo" formControlName="email" type="email" required>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput placeholder="Contraseña" type="password" formControlName="clave" id="clave" required>
+                  <div *ngIf="registerForm.get('clave').invalid && (registerForm.get('clave').dirty || registerForm.get('clave').touched)">
+                    <mat-error *ngIf="registerForm.get('clave').errors.minlength">
+                      La contraseña debe tener al menos 6 caracteres.
+                    </mat-error>
+                  </div>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Rol" formControlName="rol">
+                    <mat-option *ngFor="let rol of roles | async" [value]="rol.id">
+                      {{rol.descripcion}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-card-actions>
+                  <button type="submit" class="btn btn-primary" [disabled]='!registerForm.valid'>Enviar</button>
+                </mat-card-actions>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
