@@ -1,0 +1,48 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <mat-card>
+          <div *ngIf="actividad">
+            <mat-card-header>
+              <mat-card-title>{{actividad.nombre | titlecase}}</mat-card-title>
+              <mat-card-subtitle>Puntaje: {{actividad.puntaje}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <button mat-stroked-button color="primary" (click)="addPregunta()">Agregar Preguta</button>
+              <form [formGroup]="preguntaForm" (ngSubmit)="addPreguntas()" class="form-container mt-3">
+                <div formArrayName="preguntas">
+                  <div *ngFor="let pregunta of preguntaForms.controls; let i=index" [formGroupName]="i">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Pregunta" formControlName="pregunta">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-2">
+                        <mat-form-field>
+                          <mat-select placeholder="Respuesta" formControlName="respuesta">
+                            <mat-option *ngFor="let respuesta of respuestas " [value]="respuesta.value">
+                              {{respuesta.viewValue}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-2">
+                        <a mat-button color="warn" (click)="deletePregunta(i)">
+                          <mat-icon aria-label="Cursos">delete</mat-icon>
+                          Eliminar
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  <button mat-raised-button type="submit" class="btn btn-primary" [disabled]='!preguntaForm.valid'>Guardar</button>
+              </form>
+            </mat-card-content>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
