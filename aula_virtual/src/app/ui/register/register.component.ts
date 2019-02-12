@@ -5,7 +5,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 
-import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Rol } from '../../clases/usuario';
 
 
 @Component({
@@ -14,12 +15,12 @@ import { FormBuilder, FormGroup,Validators } from '@angular/forms';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+  roles: Observable<Rol[]>;
   constructor(
     private router: Router,
     private authService: AuthService,
     private storage: AngularFireStorage,
-      private fb: FormBuilder
+    private fb: FormBuilder
   ) { }
   @ViewChild('imageUser') inputImageUser: ElementRef;
 
@@ -33,37 +34,25 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
 
 
-
   ngOnInit() {
+    this.roles = this.authService.getRoles()
     this.registerForm = this.fb.group({
-      email: ['',Validators.required],
-      clave:['', Validators.required ],
-      rol:['', Validators.required ],
+      email: ['', Validators.required],
+      clave: ['', [Validators.required,Validators.minLength(6)]],
+      rol: ['', Validators.required],
     })
   }
 
-  roles=[
-    {
-      tipo: "Profesor"
-    },{
-      tipo: "Alumno"
-    }
-  ]
+
 
 
   onAddUser() {
+    console.log(this.registerForm.value)
     this.authService.registerUser(this.registerForm.value)
       .then((res) => {
         this.authService.isAuth().subscribe(user => {
-          if (user) {
-            user.updateProfile({
-              displayName: '',
-              photoURL: 'asa'
-            }).then(() => {
-              this.router.navigate(['dashboard']);
-            }).catch((error) => console.log('error', error));
-          }
-        });
+              this.router.navigate(['perfil']);
+          })
       }).catch(err => console.log('err', err.message));
   }
   // onLoginGoogle(): void {

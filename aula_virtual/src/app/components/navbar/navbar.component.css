@@ -1,3 +1,12 @@
 i.icon-red {
     color: red;
 }
+.navbar-brand{
+  font-family: 'Righteous', cursive;
+  font-size: 2rem;
+
+}
+.navbar-wrapper{
+  color: #1565C0;
+
+}

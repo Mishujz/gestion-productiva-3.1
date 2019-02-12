@@ -25,20 +25,28 @@ export class EditActividadComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.idActividad = data.idActividad
-  }
+    this.actividadForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(4)]],
+      // tipo: [actividad.tipo, Validators.required],
+      descripcion: ['', Validators.required],
+      puntaje: ['', Validators.required],
+      fechaInicio: ['', Validators.required],
+      fechaFin: ['', Validators.required],
+    })
+    this.cursoService.getActividad(data.idActividad).subscribe(actividad => {
+      this.actividadForm.get('nombre').setValue(actividad.nombre)
+      this.actividadForm.get('descripcion').setValue(actividad.descripcion)
+      this.actividadForm.get('puntaje').setValue(actividad.puntaje)
+      this.actividadForm.get('fechaInicio').setValue(new Date())
+      this.actividadForm.get('fechaFin').setValue(new Date())
 
-  ngOnInit() {
-    this.cursoService.getActividad(this.idActividad).subscribe(actividad => {
-
-      this.actividadForm = this.fb.group({
-        nombre: [actividad.nombre, [Validators.required, Validators.minLength(4)]],
-        // tipo: [actividad.tipo, Validators.required],
-        descripcion: [actividad.descripcion, Validators.required],
-        puntaje: [actividad.puntaje, Validators.required],
-        fechaInicio: [actividad.fechaInicio, Validators.required],
-        fechaFin: [actividad.fechaFin, Validators.required],
-      })
     })
   }
 
+  ngOnInit() {
+  }
+  addActividad() {
+    this.cursoService.updateActividad(this.idActividad,this.actividadForm.value)
+    this.dialogRef.close();
+  }
 }

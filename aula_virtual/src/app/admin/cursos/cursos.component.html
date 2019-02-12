@@ -1,3 +1,39 @@
-<p>
-  cursos works!
-</p>
+<div class="main-content">
+  <div class="container-fluid">
+    <h2>Cursos</h2>
+    <form class="example-form" *ngIf="!isProfesor">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Ingrese el código del curso" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCurso($event)" [displayWith]="displayFn">
+          <mat-option *ngFor="let curso of filteredCursos | async" [value]="curso">
+            <span>{{curso.codigo}}</span> |
+            <small>Curso: {{curso.nombre}}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <div class="row text-center">
+      <div class="col-md-2" *ngIf="isProfesor; else elseBlock">
+        <mat-card (click)="addCurso()">
+          <mat-card-content>
+            <button mat-fab color="primary">
+              <mat-icon aria-label="Agregar"> <a title="Agregar Curso"></a></mat-icon>
+            </button>
+            <mat-card-subtitle class="mt-3 text-center" color="primary">Nuevo Curso</mat-card-subtitle>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-2" *ngFor="let curso of cursos | async">
+        <mat-card>
+          <mat-card-content>
+            <button mat-fab color="primary" (click)="detalleCurso(curso)">
+              <mat-icon aria-label="Agregar">book</mat-icon>
+            </button>
+            <mat-card-subtitle class="mt-3 text-center" color="primary">{{curso.nombre}}</mat-card-subtitle>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+  </div>
+</div>

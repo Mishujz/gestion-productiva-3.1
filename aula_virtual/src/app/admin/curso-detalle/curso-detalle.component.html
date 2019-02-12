@@ -1,5 +1,11 @@
 <div class="main-content">
   <div class="container-fluid">
+
+    <div class="fab" *ngIf="isProfesor">
+      <a mat-fab color="primary" style="margin-right : 14px;" (click)="addActividad()">
+        <mat-icon>add</mat-icon>
+      </a>
+    </div>
     <mat-card *ngIf="curso">
       <mat-card-header>
         <a mat-button routerLink="/cursos">
@@ -7,14 +13,13 @@
           {{curso.nombre | titlecase}}
         </a>
       </mat-card-header>
+
       <mat-card-content>
         <mat-tab-group mat-align-tabs="center" [dynamicHeight]="true">
 
           <mat-tab label="Actividades">
             <mat-card>
-              <mat-card-content>
-                <button mat-stroked-button color="primary" (click)="addActividad()">Agregar Actividad</button>
-              </mat-card-content>
+
               <mat-table #table [dataSource]="dataSourceActividad" matSort class="animate">
                 <ng-container matColumnDef="nombre">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
@@ -39,13 +44,13 @@
                 <ng-container matColumnDef="accion">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Acción</mat-header-cell>
                   <mat-cell *matCellDef="let actividad">
-                    <button mat-icon-button (click)="viewActividad(actividad.id)">
-                      <mat-icon color="primary">remove_red_eye</mat-icon>
+                    <button mat-icon-button (click)="viewActividad(actividad)">
+                      <mat-icon color="primary">launch</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="editActividad(actividad.id)">
+                    <button mat-icon-button (click)="editActividad(actividad.id)" *ngIf="isProfesor">
                       <mat-icon color="primary">edit</mat-icon>
                     </button>
-                    <button mat-icon-button>
+                    <button mat-icon-button *ngIf="isProfesor" (click)="deleteActividad(actividad.id)">
                       <mat-icon color="warn">delete</mat-icon>
                     </button>
                   </mat-cell>
@@ -54,60 +59,23 @@
                 <mat-row *matRowDef="let row; columns: displayedColumnsActividad;" class="animate"></mat-row>
               </mat-table>
             </mat-card>
+            <ng-template #elseActividades>No se han agregado actividades.</ng-template>
           </mat-tab>
-          <mat-tab label="Estudiantes">
-            <div *ngIf="estudiantes; else elseBlock">
-              <mat-form-field>
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-              </mat-form-field>
-            </div>
-            <ng-template #elseBlock>No hay estudiantes.</ng-template>
-            <!-- <div class="row mt-2">
-              <div class="col-md-9">
-                <form class="example-form">
-                  <mat-form-field class="example-full-width">
-                    <input type="text" placeholder="Buscar" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete">
-                      <mat-option *ngFor="let option of options" [value]="option">
-                        {{option}}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-                </form>
-              </div>
-              <div class="col-md-3 mt-2">
+          <mat-tab label="Estudiantes" *ngIf="isProfesor">
+            <mat-list>
+              <h3 mat-subheader>Estudiantes</h3>
+              <mat-list-item *ngFor="let estudiante of estudiantes">
+                <!-- <mat-icon mat-list-icon>face</mat-icon> -->
+                <img *ngIf="estudiante.imagen; else elseBlock" matListAvatar [src]="estudiante.imagen" />
+                <ng-template #elseBlock>
+                  <img matListAvatar src="../assets/img/faces/no-user.png" alt="avatar">
+                </ng-template>
+                <h4 mat-line>{{estudiante.nombres}} {{estudiante.apellidos}}</h4>
+                <p mat-line class="text-secondary"> @{{estudiante.usuario}} </p>
+              </mat-list-item>
+            </mat-list>
 
-                <button mat-stroked-button color="primary">Agregar Estudiante</button>
-              </div>
-            </div> -->
-
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-              <!-- Position Column -->
-              <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-              </ng-container>
-              <!-- Name Column -->
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-              </ng-container>
-              <!-- Weight Column -->
-              <ng-container matColumnDef="weight">
-                <th mat-header-cell *matHeaderCellDef> Weight </th>
-                <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-              </ng-container>
-              <!-- Symbol Column -->
-              <ng-container matColumnDef="symbol">
-                <th mat-header-cell *matHeaderCellDef> Symbol </th>
-                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
           </mat-tab>
-          <mat-tab label="Ajustes"> Content 3 </mat-tab>
         </mat-tab-group>
       </mat-card-content>
     </mat-card>

@@ -3,26 +3,14 @@
     <mat-card-title>Editar actividad</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="actividadForm" (ngSubmit)="addActividad()" class="form-container">
+    <form  [formGroup]="actividadForm"  (ngSubmit)="addActividad()" class="form-container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Nombre del actividad" type="text" formControlName="nombre">
           </mat-form-field>
         </div>
-
-      </div>
-      <div class="row">
-        <!-- <div class="col-md-6">
-          <mat-form-field>
-            <mat-select placeholder="Tipo de Actividad" formControlName="tipo">
-              <mat-option *ngFor="let tipo of tipo_actividades | async" [value]="tipo.id">
-                {{tipo.descripcion}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div> -->
-        <div class="col-md-6">
+        <div class="col-md-2">
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Puntaje" type="number" formControlName="puntaje">
           </mat-form-field>
@@ -51,7 +39,7 @@
           </mat-form-field>
         </div>
       </div>
-      <mat-card-actions>
+      <mat-card-actions align="rigth">
         <button mat-raised-button type="submit" class="btn btn-primary pull-right mb-3" [disabled]='!actividadForm.valid'>Guardar</button>
       </mat-card-actions>
     </form>

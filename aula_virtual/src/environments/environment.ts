@@ -6,11 +6,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyAkiDyYcAtkytnttqI1Zpc3nHhcQtJlhiw",
-    authDomain: "lecciones-utpl.firebaseapp.com",
-    databaseURL: "https://lecciones-utpl.firebaseio.com",
-    projectId: "lecciones-utpl",
-    storageBucket: "lecciones-utpl.appspot.com",
-    messagingSenderId: "948277858907"
+    apiKey: "AIzaSyBTOA2XB1n6m31OOZZtVXgkyX931Z-ktro",
+    authDomain: "aulavirtual-utpl.firebaseapp.com",
+    databaseURL: "https://aulavirtual-utpl.firebaseio.com",
+    projectId: "aulavirtual-utpl",
+    storageBucket: "aulavirtual-utpl.appspot.com",
+    messagingSenderId: "109239205108"
+
   }
 };

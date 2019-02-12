@@ -20,6 +20,11 @@ export interface Actividad {
   img?:string,
   idCurso?:string,
 }
+export interface UsuarioCurso {
+  uid?:string,
+  idCurso?:string,
+  idUsuario?:string,
+}
 
 export interface TipoActividad {
   uid?:string,
@@ -30,4 +35,15 @@ export interface Pregunta {
   uid?:string,
   preguntas:[],
   idActividad?:string,
+}
+export interface Respuesta {
+  uid?:string,
+  respuesta?:string,
+  imagen?:string,
+  nomUsuario?:string,
+  fecha?:Date,
+  idActividad?:string,
+  idUsuario?:string,
+  calificacion?:number,
+  activo?:boolean,
 }

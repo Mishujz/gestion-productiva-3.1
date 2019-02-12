@@ -1,31 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { Curso, TipoActividad, Actividad } from '../../clases/curso';
 import { CursoService } from '../../servicios/curso/curso.service';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort } from '@angular/material';
 import { AddActividadComponent } from '../dialogs/add-actividad/add-actividad.component';
 import { EditActividadComponent } from '../dialogs/edit-actividad/edit-actividad.component';
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import { ActividadEstudianteComponent } from '../dialogs/actividad-estudiante/actividad-estudiante.component';
+import { AuthService } from '../../servicios/auth/auth.service';
+import { UserInterface } from '../../clases/usuario';
+import { LeccionComponent } from '../dialogs/leccion/leccion.component';
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
 @Component({
   selector: 'app-curso-detalle',
   templateUrl: './curso-detalle.component.html',
@@ -34,28 +20,53 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class CursoDetalleComponent implements OnInit {
 
   private uid;
+  private uidUser;
   curso: Curso
   actividades: Observable<Actividad[]>
-  estudiantes: Observable<any[]>
+  estudiantes: UserInterface[] = []
   tipoActividade: Observable<TipoActividad[]>
+  dataSourceEstudiante;
   dataSourceActividad: MatTableDataSource<any>;
+  // dataSourceEstudiante: MatTableDataSource < UserInterface [] > ;
+  displayedColumnsEstudiante: string[] = ['usuario', 'nombres', 'apellidos', 'email'];
   displayedColumnsActividad: string[] = ['nombre', 'descripcion', 'inicio', 'fin', 'tipo', 'accion'];
   @ViewChild(MatSort) sort: MatSort;
+  isProfesor: boolean;
 
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
     public router: Router,
     private cursoService: CursoService,
-  ) { }
-
-  ngOnInit() {
+    private authService: AuthService,
+  ) {
     this.uid = this.route.snapshot.paramMap.get('uid');
-    console.log(this.uid)
+    this.authService.getAuth().subscribe(data => {
+      this.authService.getUser(data.uid).subscribe(user => {
+        this.uidUser = user.id
+        if (user.rol == "1") {
+          this.isProfesor = true
+        } else {
+          this.isProfesor = false
+        }
+      })
+    })
     this.cursoService.getCurso(this.uid).subscribe(curso => {
       this.curso = curso
     })
     this.actividades = this.cursoService.getActividades(this.uid)
+    this.cursoService.getEstudiantes(this.uid).subscribe(estudiantes => {
+      const users: UserInterface[] = []
+      estudiantes.forEach(estudiante => {
+        this.authService.getUser(estudiante.idUsuario).subscribe(user => {
+          users.push(user)
+        })
+      })
+      this.estudiantes = users
+      this.dataSourceEstudiante = users;
+      // let estudiantes:UserInterface[] = [];
+
+    })
     this.actividades.subscribe(actividades => {
       // this.cursoService.getTipoActividades().subscribe(tipos=>{
       //  tipos.forEach(tipo=>{})
@@ -67,11 +78,15 @@ export class CursoDetalleComponent implements OnInit {
           actividad.tipo = "Foro"
         } else if (actividad.tipo == "2") {
           actividad.tipo = "Ensayo"
-        } else {
+        } else if (actividad.tipo == "3") {
           actividad.tipo = "Lección"
         }
       })
     })
+  }
+
+  ngOnInit() {
+
   }
   // myControl = new FormControl();
   //  options: string[] = ['Juan Alvarez', 'Daniela Maldonado', 'Karen Lopez'];
@@ -82,7 +97,9 @@ export class CursoDetalleComponent implements OnInit {
 
   addActividad() {
     const dialogRef = this.dialog.open(AddActividadComponent, {
-      data: { idCurso: this.uid },
+      data: {
+        idCurso: this.uid,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -90,11 +107,17 @@ export class CursoDetalleComponent implements OnInit {
       // this.animal = result;
     });
   }
-  viewActividad(uid) {
-    this.router.navigate(['/actividad/'+uid])
+
+  viewActividad(actividad) {
+    if (actividad.tipo == "Lección") {
+      const dialogLeccion = this.dialog.open(LeccionComponent, {
+        data: { idActividad: actividad.id },
+      });
+    } else {
+      this.router.navigate(['/actividad/' + actividad.id])
+    }
   }
-  editActividad(uid){
-    console.log(uid)
+  editActividad(uid) {
     const dialogRef = this.dialog.open(EditActividadComponent, {
       data: { idActividad: uid },
     });
@@ -103,5 +126,8 @@ export class CursoDetalleComponent implements OnInit {
       // console.log('The dialog was closed');
       // this.animal = result;
     });
+  }
+  deleteActividad(uid) {
+    this.cursoService.deleteActividad(uid)
   }
 }

@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './ui/login/login.component';
 import { RegisterComponent } from './ui/register/register.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 //guard
 import { AuthGuard } from './servicios/auth-guard/auth.guard';
 const routes: Routes = [
@@ -32,7 +33,12 @@ const routes: Routes = [
         path: '',
         loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
       }]
-  }
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+    pathMatch: 'full',
+  },
 
 ];
 

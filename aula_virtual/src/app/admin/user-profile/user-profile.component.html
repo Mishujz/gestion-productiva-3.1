@@ -13,9 +13,23 @@
                 <div class="card-profile">
 
                   <div class="card-avatar">
-                    <a href="#pablo">
-                      <img class="img" src="./assets/img/faces/marc.jpg" />
-                    </a>
+                    <!-- verifica si hay imagen sino imagen por defecto -->
+                    <div *ngIf="usuario?.imagen; else elseBlock">
+                      <img class="img" [src]="usuario.imagen" />
+                    </div>
+                    <ng-template #elseBlock>
+                      <img class="img" src="./assets/img/faces/no-user.png" />
+                      <ng-template #elseBlock>
+                        <img matListAvatar src="../assets/img/faces/no-user.png" alt="avatar">
+                      </ng-template>
+                    </ng-template>
+                  </div>
+                  <div class="row">
+                  <!-- formulario para subir imagen -->
+                    <div class="form-group">
+                      <label for="exampleFormControlFile1">Seleccione una imagen</label>
+                      <input type="file" class="form-control-file ml-2" id="exampleFormControlFile1" (change)="onUpload($event)" accept=".png,.jpg" >
+                    </div>
                   </div>
 
                 </div>
@@ -25,7 +39,7 @@
                   <div class="row">
                     <div class="col-md-8">
                       <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Correo" formControlName="correo">
+                        <input matInput placeholder="Correo" formControlName="email">
                       </mat-form-field>
                     </div>
                     <div class="col-md-4">
@@ -46,13 +60,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <div class="row">
 
-                    <div class="form-group">
-                      <label for="exampleFormControlFile1">Seleccione una imagen</label>
-                      <input type="file" class="form-control-file" id="exampleFormControlFile1" (change)="onUpload($event)" accept=".png,.jpg" formControlName="imagen">
-                    </div>
-                  </div>
                   <button mat-raised-button type="submit" class="btn btn-danger pull-right" [disabled]='!usuarioForm.valid'>Actualizar Perfil</button>
                   <div class="clearfix"></div>
                 </form>

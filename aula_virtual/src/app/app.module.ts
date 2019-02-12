@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 
 import { AppComponent } from './app.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 //angular material
 import {
@@ -18,7 +20,10 @@ import {
   MatFormFieldModule,
   MatTooltipModule,
   MatSelectModule,
-  MatCardModule
+  MatCardModule,
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
 } from '@angular/material';
 //Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -53,6 +58,10 @@ import { ToastrModule } from 'ngx-toastr';
     MatTooltipModule,
     MatSelectModule,
     MatCardModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot(
       {
         timeOut: 10000,
@@ -66,9 +75,9 @@ import { ToastrModule } from 'ngx-toastr';
     AdminLayoutComponent,
     LoginComponent,
     RegisterComponent,
-
-  ],
-  providers: [AuthGuard,AuthService],
+    NotFoundComponent,
+    ],
+  providers: [AuthGuard,AuthService,MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

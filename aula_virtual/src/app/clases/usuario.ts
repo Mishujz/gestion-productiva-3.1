@@ -8,20 +8,22 @@ export interface Usuario {
   rol?:boolean,
 }
 
-export interface TipoUsuario {
-  key?:number,
+export interface Rol {
+  uid?:string,
   descripcion:string,
 }
 
 export interface Roles {
-  tipo?: 1;
+  tipo?: number;
 }
 
 export interface UserInterface {
   id?: string;
-  name?: string;
+  nombres?:string,
+  apellidos?:string,
+  username?:string,
   email?: string;
   password?: string;
-  photoUrl?: string;
-  roles: Roles;
+  imagen?: string;
+  rol?: string;
 }
